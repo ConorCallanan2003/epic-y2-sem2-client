@@ -15,13 +15,12 @@ export default function NavBarDialog() {
   return (
     <>
       <DrawerContent className="pb-3">
-        <h1 className="text-center pt-4 text-4xl font-bold">CycleSentry</h1>
-        <div className="flex flex-col py-4 px-6  gap-3">
-          <Separator />
+        {/* <h1 className="text-center pt-4 text-4xl font-bold">CycleSentry</h1> */}
+        <div className="flex flex-col py-6 px-6 gap-4">
           <DrawerClose asChild>
             <Link href={"/"}>
               <div className="flex justify-center items-center gap-3">
-                <LayoutDashboard size={28} />
+                <LayoutDashboard size={32} />
                 <h1 className="text-2xl font-medium text-center">Dashboard</h1>
               </div>
             </Link>
@@ -30,7 +29,7 @@ export default function NavBarDialog() {
           <DrawerClose asChild>
             <Link href={"/location"}>
               <div className="flex justify-center items-center gap-3">
-                <LocateFixed size={28} />
+                <LocateFixed size={32} />
                 <h1 className="text-2xl font-medium text-center">
                   Current Location
                 </h1>
@@ -42,7 +41,7 @@ export default function NavBarDialog() {
           <DrawerClose asChild>
             <Link href={"/camera"}>
               <div className="flex justify-center items-center gap-3">
-                <Camera size={28} />
+                <Camera size={32} />
                 <h1 className="text-2xl font-medium text-center">Camera</h1>
               </div>
             </Link>

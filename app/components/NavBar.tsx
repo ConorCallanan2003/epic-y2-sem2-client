@@ -10,7 +10,7 @@ export default function NavBar() {
         <h1 className="text-2xl font-medium">CycleSentry</h1>
       </div>
       <DrawerTrigger>
-        <Menu size={40} />
+        <Menu size={36} />
       </DrawerTrigger>
     </div>
   );

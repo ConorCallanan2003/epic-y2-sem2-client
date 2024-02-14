@@ -68,13 +68,13 @@ export default function Home() {
         <TableBody>
           <TableRow>
             <TableCell>College</TableCell>
-            <TableCell>52.67380289775</TableCell>
-            <TableCell>-8.57788981026</TableCell>
+            <TableCell>52.67380289</TableCell>
+            <TableCell>-8.57788981</TableCell>
           </TableRow>
           <TableRow>
             <TableCell>Home</TableCell>
-            <TableCell>52.65963441271</TableCell>
-            <TableCell>-8.57428751987</TableCell>
+            <TableCell>52.65963441</TableCell>
+            <TableCell>-8.57428751</TableCell>
           </TableRow>
         </TableBody>
       </Table>
