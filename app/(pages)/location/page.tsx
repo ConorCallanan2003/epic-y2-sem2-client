@@ -26,7 +26,7 @@ export default function LocationPage() {
   return (
     <div className="h-full flex flex-col justify-between items-center">
       <h1 className="pb-6 pt-2 text-3xl font-bold">Current Location</h1>
-      <div className="w-full h-[600px]">
+      <div className="w-full h-full">
         <Map
           //   ref={ref}
           mapboxAccessToken={

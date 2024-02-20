@@ -2,22 +2,13 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Separator } from "@radix-ui/react-separator";
-import {
-  Bike,
-  Briefcase,
-  GraduationCap,
-  HomeIcon,
-  LucideBike,
-} from "lucide-react";
-import Image from "next/image";
-import Map, { NavigationControl, GeolocateControl, Marker } from "react-map-gl";
+import { GraduationCap, HomeIcon, LucideBike } from "lucide-react";
+import Map, { Marker } from "react-map-gl";
 
 export default function Home() {
   return (
