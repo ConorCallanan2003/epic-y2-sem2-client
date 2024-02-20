@@ -6,70 +6,58 @@ import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 
-// const Loader = styled.div`
-//   border: 3px solid #f3f3f3; /* Light grey */
-//   border-top: 3px solid #3c3c3c; /* Blue */
-//   border-radius: 50%;
-//   width: 15px;
-//   height: 15px;
-//   animation: spin 0.5s linear infinite;
-
-//   @keyframes spin {
-//     0% {
-//       transform: rotate(0deg);
-//     }
-//     100% {
-//       transform: rotate(360deg);
-//     }
-//   }
-// `;
-
 function Loader() {
   return (
     <div className="border-2 border-white border-t-0 border-l-0 rounded-full w-[15px] h-[15px] animate-spin"></div>
   );
 }
 
-async function signInWithEmail(email: string, password: string) {
-  // const { data, error } = await supabase.auth.signInWithPassword({
-  //   email: email,
-  //   password: password,
-  // });
-
-  // if (error) return error;
+async function signInWithID(id: string) {
   return "success";
 }
 
+const config = {
+  pushKey:
+    "BKdU2S8eVhdVjoHlNzumL91cPo_DblBU3B8iMmNdQfIPgD_VUVDnW63FPG9MmpuoNzALUUOl5PM4PJ2d_QUKjGQ",
+};
+
+async function subscribe(id) {
+  const swReg = await navigator.serviceWorker.register("/sw.js");
+  const subscription = await swReg.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: urlB64ToUint8Array(config.pushKey),
+  });
+}
+function urlB64ToUint8Array(base64String: string) {
+  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding)
+    .replace(/\-/g, "+")
+    .replace(/_/g, "/");
+
+  console.log(base64);
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+
 export default function SignIn() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [id, setID] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleSignIn = () => {
     setLoading(true);
-    signInWithEmail(email, password).then((result) => {
-      // if (result === "success") {
+    signInWithID(id).then((result) => {
       setTimeout(() => {
-        const options = [
-          () => {
-            setError("Incorrect password");
-            setLoading(false);
-          },
-          () => {
-            window.sessionStorage.setItem("loggedIn", "true");
-            router.push("/");
-          },
-        ];
-        var randomIndex = Math.floor(Math.random() * 2);
-        // Step 3: Select the item
-        options[randomIndex]();
+        window.sessionStorage.setItem("loggedIn", "true");
+        subscribe(id);
+        router.push("/");
       }, 1000);
-
-      //   return;
-      // }
-      // setError(result.message);
     });
   };
   return (
@@ -80,26 +68,16 @@ export default function SignIn() {
         </div>
         <div
           style={{ fontSize: "24px" }}
-          className="font-medium pb-6 text-center  "
+          className="font-light leading-6 text-sm pb-6 text-center  "
         >
-          Log in
+          Please enter your device ID
         </div>
         <Input
-          className="mb-2"
           onChange={(e) => {
             setError("");
-            setEmail(e.target.value);
+            setID(e.target.value);
           }}
-          type="email"
-          placeholder="Email"
-        ></Input>
-        <Input
-          onChange={(e) => {
-            setError("");
-            setPassword(e.target.value);
-          }}
-          type="password"
-          placeholder="Password"
+          placeholder="ID"
         ></Input>
         {error ? (
           <div style={{ fontSize: "12px" }} className="text-red-500">
