@@ -21,7 +21,7 @@ const config = {
     "BKdU2S8eVhdVjoHlNzumL91cPo_DblBU3B8iMmNdQfIPgD_VUVDnW63FPG9MmpuoNzALUUOl5PM4PJ2d_QUKjGQ",
 };
 
-async function subscribe(id) {
+async function subscribe(id: any) {
   const swReg = await navigator.serviceWorker.register("/sw.js");
   const subscription = await swReg.pushManager.subscribe({
     userVisibleOnly: true,
