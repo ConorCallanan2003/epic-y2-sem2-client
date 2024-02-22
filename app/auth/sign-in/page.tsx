@@ -22,11 +22,26 @@ const config = {
 };
 
 async function subscribe(id: any) {
+  const uuid = crypto.randomUUID();
   const swReg = await navigator.serviceWorker.register("/sw.js");
   const subscription = await swReg.pushManager.subscribe({
     userVisibleOnly: true,
     applicationServerKey: urlB64ToUint8Array(config.pushKey),
   });
+  fetch(
+    "https://rgi6vfa23saurzlxbmxq67gkti0hbepw.lambda-url.eu-west-1.on.aws/",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        TableName: "Notifications",
+        Item: {
+          id: uuid,
+          topic: id,
+          subscription: JSON.stringify(subscription),
+        },
+      }),
+    }
+  );
 }
 function urlB64ToUint8Array(base64String: string) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);

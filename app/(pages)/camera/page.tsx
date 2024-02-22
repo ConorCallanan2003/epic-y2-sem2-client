@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 export default function Camera() {
   return (
     <div className="flex flex-col grow justify-evenly">
-      <h1 className="text-3xl font-bold text-center">History</h1>
+      <h1 className="text-3xl pt-2 pb-2 font-bold text-center">History</h1>
       <Table>
         <TableHeader>
           <TableRow>
@@ -45,6 +45,9 @@ export default function Camera() {
           </TableRow>
         </TableBody>
       </Table>
+      <div className="py-6 px-6">
+        <Button className="w-full">Capture Image</Button>
+      </div>
     </div>
   );
 }
