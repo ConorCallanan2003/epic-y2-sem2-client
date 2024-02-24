@@ -15,10 +15,10 @@ export default function Layout({
     window.sessionStorage.getItem("loggedIn") === "true"
       ? null
       : router.push("auth/sign-in");
-  }, []);
+  }, [router]);
   return (
-    <div className="h-screen flex flex-col">
-      <div className="grow max-h-20">
+    <div className="flex h-screen flex-col">
+      <div className="max-h-20 grow">
         <Drawer>
           <NavBarDialog />
           <NavBar />

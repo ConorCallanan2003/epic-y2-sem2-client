@@ -1,8 +1,9 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Bike, ChevronLeft } from "lucide-react";
+import { Bike } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { DeviceUUID } from "device-uuid";
 
 import { useState } from "react";
 
@@ -22,12 +23,16 @@ const config = {
 };
 
 async function subscribe(id: any) {
-  const uuid = crypto.randomUUID();
+  console.log("HERE");
+  const uuid = new DeviceUUID().get();
+  const subID = uuid.concat("+", id);
   const swReg = await navigator.serviceWorker.register("/sw.js");
+  console.log(swReg.active);
   const subscription = await swReg.pushManager.subscribe({
     userVisibleOnly: true,
     applicationServerKey: urlB64ToUint8Array(config.pushKey),
   });
+  console.log("Subscription registered");
   fetch(
     "https://rgi6vfa23saurzlxbmxq67gkti0hbepw.lambda-url.eu-west-1.on.aws/",
     {
@@ -35,7 +40,7 @@ async function subscribe(id: any) {
       body: JSON.stringify({
         TableName: "Notifications",
         Item: {
-          id: uuid,
+          id: subID,
           topic: id,
           subscription: JSON.stringify(subscription),
         },
@@ -93,6 +98,7 @@ export default function SignIn() {
             setID(e.target.value);
           }}
           placeholder="ID"
+          className="text-lg"
         ></Input>
         {error ? (
           <div style={{ fontSize: "12px" }} className="text-red-500">
