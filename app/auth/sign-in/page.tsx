@@ -23,7 +23,7 @@ const config = {
 };
 
 async function subscribe(id: any) {
-  console.log("HERE");
+  if (sessionStorage.getItem("notifications") === "true") return;
   const uuid = new DeviceUUID().get();
   const subID = uuid.concat("+", id);
   const swReg = await navigator.serviceWorker.register("/sw.js");
@@ -47,6 +47,7 @@ async function subscribe(id: any) {
       }),
     }
   );
+  sessionStorage.setItem("notifications", "true");
 }
 function urlB64ToUint8Array(base64String: string) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
