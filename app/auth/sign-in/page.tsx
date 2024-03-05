@@ -5,7 +5,7 @@ import { Bike } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { DeviceUUID } from "device-uuid";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function Loader() {
   return (
@@ -24,9 +24,7 @@ const config = {
 
 async function subscribe(id: any) {
   if (sessionStorage.getItem("notifications") === "true") return;
-  const uuid = new DeviceUUID().get();
-  const subID = uuid.concat("+", id);
-  const swReg = await navigator.serviceWorker.register("/sw.js");
+  const swReg = await global.navigator.serviceWorker.register("/sw.js");
   console.log(swReg.active);
   const subscription = await swReg.pushManager.subscribe({
     userVisibleOnly: true,
@@ -40,7 +38,7 @@ async function subscribe(id: any) {
       body: JSON.stringify({
         TableName: "Notifications",
         Item: {
-          id: subID,
+          id: id,
           topic: id,
           subscription: JSON.stringify(subscription),
         },

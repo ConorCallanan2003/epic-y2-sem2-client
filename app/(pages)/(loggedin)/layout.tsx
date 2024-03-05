@@ -1,7 +1,7 @@
 "use client";
 import { Drawer } from "@/components/ui/drawer";
-import NavBar from "../components/NavBar";
-import NavBarDialog from "../components/NavBarDialog";
+import NavBar from "../../components/NavBar";
+import NavBarDialog from "../../components/NavBarDialog";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
