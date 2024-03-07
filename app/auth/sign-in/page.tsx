@@ -81,7 +81,7 @@ export default function SignIn() {
   };
   return (
     <div className="flex-col w-full h-screen flex justify-start items-center ">
-      <div className="w-3/5 flex flex-col pt-16">
+      <div className="w-3/5 sm:w-1/3 flex flex-col pt-16">
         <div className="flex justify-center pb-4 pt-24">
           <Bike size={130} />
         </div>

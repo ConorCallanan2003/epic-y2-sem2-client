@@ -14,7 +14,7 @@ import Link from "next/link";
 export default function NavBarDialog() {
   return (
     <>
-      <DrawerContent className="pb-3">
+      <DrawerContent className="pb-3 bg-gray-900">
         {/* <h1 className="text-center pt-4 text-4xl font-bold">CycleSentry</h1> */}
         <div className="flex flex-col pt-6 pb-2 px-6 gap-4">
           <DrawerClose asChild>

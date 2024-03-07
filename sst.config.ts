@@ -1,5 +1,5 @@
 import { SSTConfig } from "sst";
-import { Api, NextjsSite } from "sst/constructs";
+import { Api, Bucket, NextjsSite } from "sst/constructs";
 
 export default {
   config(_input) {
@@ -13,10 +13,12 @@ export default {
       const api = new Api(stack, "api", {
         routes: {
           "GET /": "api/src/time.handler",
+          "GET /test": "api/src/test.handler",
         },
       });
+      const bucket = new Bucket(stack, "public");
       const site = new NextjsSite(stack, "site", {
-        bind: [api],
+        bind: [api, bucket],  
       });
       stack.addOutputs({
         ApiUrl: api.url,
