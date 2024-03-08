@@ -55,7 +55,7 @@ export default function ChatPage() {
     { sender: string; message: string }[]
   >([]);
   const [input, setInput] = useState("");
-  const [responding, setResponding] = useState(true);
+  const [responding, setResponding] = useState(false);
 
   async function addMessage(message: string) {
     setMessages((previous) => {

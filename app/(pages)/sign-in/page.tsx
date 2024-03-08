@@ -101,13 +101,7 @@ export default function SignIn() {
         </CardContent>
         <CardFooter className="flex flex-col gap-3 w-full justify-between">
           <Button
-            className="w-full"
             variant="outline"
-            onClick={() => router.push("/")}
-          >
-            Cancel
-          </Button>
-          <Button
             className="w-full"
             onClick={() => {
               if (validateUser(details["email"], details["password"])) {
@@ -118,6 +112,9 @@ export default function SignIn() {
             }}
           >
             Sign in
+          </Button>
+          <Button className="w-full" onClick={() => router.push("/")}>
+            Cancel
           </Button>
         </CardFooter>
       </Card>

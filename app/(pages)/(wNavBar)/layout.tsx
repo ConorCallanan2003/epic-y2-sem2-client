@@ -35,7 +35,7 @@ export default function Layout({
         <div className="sm:hidden">
           <NavBarMobile />
         </div>
-        <div className="px-8">{children}</div>
+        <div className="lg:px-8">{children}</div>
         <NavBarMobileDialog loggedIn={loggedIn} signOut={signOut} />
       </Drawer>
     </DropdownMenu>

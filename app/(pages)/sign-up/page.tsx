@@ -113,14 +113,18 @@ export default function SignIn() {
                   className="text-white  sm:text-sm text-lg"
                   onBlur={() => {
                     if (
-                      details["password1"] &&
+                      details["password2"] &&
                       !details["password2"].match(pwRegex)
                     ) {
                       setError(
                         "Password must contain at least one uppercase letter, one number, and one special symbol."
                       );
                     }
-                    if (details["password1"] != details["password2"]) {
+                    if (
+                      details["password1"] &&
+                      details["password2"] &&
+                      details["password1"] != details["password2"]
+                    ) {
                       setError("Passwords must match. ");
                     }
                   }}
@@ -169,13 +173,7 @@ export default function SignIn() {
         </CardContent>
         <CardFooter className="flex flex-col gap-3 w-full justify-between">
           <Button
-            className="w-full"
             variant="outline"
-            onClick={() => router.push("/")}
-          >
-            Cancel
-          </Button>
-          <Button
             className="w-full"
             onClick={() => {
               if (!error) {
@@ -189,6 +187,9 @@ export default function SignIn() {
             }}
           >
             Sign up
+          </Button>
+          <Button className="w-full" onClick={() => router.push("/")}>
+            Cancel
           </Button>
         </CardFooter>
       </Card>
