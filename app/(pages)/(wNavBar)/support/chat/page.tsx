@@ -1,6 +1,4 @@
 "use client";
-import { Textarea } from "@/components/ui/textarea";
-import { Timeout } from "aws-cdk-lib/aws-stepfunctions";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
@@ -73,9 +71,9 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="h-full w-full flex flex-col align-center items-center">
+    <div className="h-full w-full px-6 flex flex-col align-center items-center">
       <h1 className="text-5xl pb-6 font-bold">CycleSentry Chat</h1>
-      <div className="px-6 h-[450px] border py-6 rounded-lg border-2 w-full flex flex-col">
+      <div className="px-6 h-[580px] border py-6 rounded-lg border-2 w-full flex flex-col">
         {messages.map((message) => (
           <Message
             system={message.sender == "agent"}
@@ -120,6 +118,7 @@ export default function ChatPage() {
           onChange={(e) => setInput(e.target.value)}
           value={input}
           type="text"
+          placeholder="Message"
           className="bg-transparent px-4 text-lg h-full w-full text-black justify-center items-center"
         ></input>
         <button
