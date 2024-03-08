@@ -91,7 +91,7 @@ export default function SignIn() {
                 <p className="text-sm text-red-500">{error}</p>
               </div>
               <div className="pt-1 flex text-white gap-2">
-                <p className="text-md">I don't have an account.</p>
+                <p className="text-md">I don&apos;t have an account.</p>
                 <a href="/sign-up" className="font-bold">
                   Sign up
                 </a>

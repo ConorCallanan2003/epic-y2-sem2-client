@@ -1,11 +1,14 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function AccountDetails() {
   const email = window.sessionStorage.getItem("user");
-  const users: { email: string; password: string; admin: string }[] =
-    JSON.parse(window.sessionStorage.getItem("users") as string);
-  const password = users.filter((user) => user.email == email)[0].password;
+  let users: { email: string; password: string; admin: string }[];
+  let password = "";
+  useEffect(() => {
+    users = JSON.parse(global.window.sessionStorage.getItem("users") as string);
+    password = users.filter((user) => user.email == email)[0].password;
+  }, []);
   const unlockPattern = [3, 5, 1];
 
   const [showPassword, setShowPassword] = useState(false);

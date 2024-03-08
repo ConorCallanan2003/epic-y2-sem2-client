@@ -14,11 +14,11 @@ export default function DeviceAnimation({
     setWidth(newWidth);
   });
 
-  const { scene } = useGLTF("/device.glb");
+  const { scene } = useGLTF("device.glb");
   console.log(width);
   return (
     <div className="absolute w-full h-full ">
-      <Canvas camera={{ position: [0, 0, -200], fov: 8 * (1065 / width) }}>
+      <Canvas camera={{ position: [0, 0, -200], fov: 10 * (1065 / width) }}>
         <ambientLight intensity={5} />
         <mesh rotation={[-0.9 + 2.4 * (scrollDistance / 800), 0, 0]}>
           <primitive

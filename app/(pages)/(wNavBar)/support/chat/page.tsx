@@ -74,8 +74,9 @@ export default function ChatPage() {
     <div className="h-full w-full px-6 flex flex-col align-center items-center">
       <h1 className="text-5xl pb-6 font-bold">CycleSentry Chat</h1>
       <div className="px-6 h-[580px] border py-6 rounded-lg border-2 w-full flex flex-col">
-        {messages.map((message) => (
+        {messages.map((message, index) => (
           <Message
+            key={message.sender + index.toString()}
             system={message.sender == "agent"}
             message={message.message}
           />
