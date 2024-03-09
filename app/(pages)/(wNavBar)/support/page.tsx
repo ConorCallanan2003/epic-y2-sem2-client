@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Support() {
   return (
-    <div className="h-full w-full flex flex-col justify-center items-center">
+    <div className="h-full w-full flex flex-col justify-center items-center pb-16">
       <h1 className="text-5xl font-bold">Have a problem?</h1>
       <h2 className="text-3xl font-light">We&apos;re sorry to hear it</h2>
       <div className="w-full xl:w-2/3 h-full grid gap-8 place-items-center md:grid-cols-2 pt-8">

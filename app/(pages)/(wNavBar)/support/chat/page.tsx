@@ -73,7 +73,7 @@ export default function ChatPage() {
   return (
     <div className="h-full w-full px-6 flex flex-col align-center items-center">
       <h1 className="md:text-5xl text-2xl pb-6 font-bold">CycleSentry Chat</h1>
-      <div className="px-6 md:h-[580px] overflow-auto h-[500px] border py-6 rounded-lg border-2 w-full flex flex-col">
+      <div className="px-6 md:h-[580px] overflow-auto h-[500px] border py-6 rounded-lg border-2 w-full flex flex-col justify-end">
         {messages.map((message, index) => (
           <Message
             key={message.sender + index.toString()}

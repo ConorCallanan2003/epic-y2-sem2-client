@@ -10,18 +10,18 @@ export default function AccountDetails() {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="h-full w-full flex flex-col justify-center items-center">
-      <div className="w-1/3 flex flex-col gap-1">
-        <h1 className="text-3xl pb-10 text-center font-bold">
+    <div className="h-full w-full px-8 flex flex-col justify-center items-center">
+      <div className="w-full md:w-1/3 flex flex-col gap-1">
+        <h1 className="text-4xl md:text-3xl pb-10 text-center font-bold">
           Account Details
         </h1>
         <div className="flex justify-between">
-          <h1 className="text-2xl font-medium">Email address</h1>
-          <h1 className="text-2xl font-light">{context.email}</h1>
+          <h1 className="text-xl md:text-2xl font-medium">Email address</h1>
+          <h1 className="text-xl md:text-2xl font-light">{context.email}</h1>
         </div>
         <div className="flex justify-between">
-          <h1 className="text-2xl font-medium">Unlock pattern</h1>
-          <h1 className="text-2xl font-light">
+          <h1 className="text-xl md:text-2xl font-medium">Unlock pattern</h1>
+          <h1 className="text-xl md:text-2xl font-light">
             {JSON.stringify(unlockPattern)}
           </h1>
         </div>
