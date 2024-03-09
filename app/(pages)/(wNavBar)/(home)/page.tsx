@@ -1,16 +1,12 @@
 "use client";
-import DeviceAnimation from "@/app/3d/device";
+import dynamic from "next/dynamic";
+const DeviceAnimation = dynamic(() => import("@/app/3d/device"), {
+  ssr: false,
+});
 import { useInView } from "react-intersection-observer";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import {
-  Brain,
-  BrainCircuit,
-  Cpu,
-  Lock,
-  ShieldPlus,
-  Sparkle,
-} from "lucide-react";
+import { BrainCircuit, Lock, ShieldPlus } from "lucide-react";
 
 const containerVariants = {
   hidden: { opacity: 0 },

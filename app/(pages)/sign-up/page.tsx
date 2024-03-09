@@ -143,7 +143,6 @@ export default function SignIn() {
                   <div className="flex items-center space-x-2">
                     <Checkbox
                       value={details["admin"]}
-                      // onChange={(e) => console.log(e)}
                       onCheckedChange={(e) =>
                         setDetails((previous) => ({ ...previous, admin: e }))
                       }

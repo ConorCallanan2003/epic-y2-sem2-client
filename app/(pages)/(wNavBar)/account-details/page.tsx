@@ -2,11 +2,12 @@
 import { useEffect, useState } from "react";
 
 export default function AccountDetails() {
-  const email = window.sessionStorage.getItem("user");
   let users: { email: string; password: string; admin: string }[];
+  let email = "";
   let password = "";
   useEffect(() => {
-    users = JSON.parse(global.window.sessionStorage.getItem("users") as string);
+    email = window.sessionStorage.getItem("user")!;
+    users = JSON.parse(window.sessionStorage.getItem("users") as string);
     password = users.filter((user) => user.email == email)[0].password;
   }, []);
   const unlockPattern = [3, 5, 1];

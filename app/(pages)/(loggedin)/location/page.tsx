@@ -4,17 +4,6 @@ import { useEffect, useRef } from "react";
 import Map, { NavigationControl, GeolocateControl, Marker } from "react-map-gl";
 
 export default function LocationPage() {
-  //   const ref = useRef(null);
-  //   useEffect(() => {
-  //     console.log(ref);
-  //     const elements = document.getElementsByClassName(
-  //       "mapboxgl-ctrl-bottom-right"
-  //     );
-  //     if (elements.length > 0) {
-  //       elements[0].parentElement?.removeChild(elements[0]);
-  //     }
-  //   }, [ref.current]);
-
   const defaultProps = {
     center: {
       lat: 10.99835602,

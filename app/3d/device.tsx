@@ -14,8 +14,7 @@ export default function DeviceAnimation({
     setWidth(newWidth);
   });
 
-  const { scene } = useGLTF("device.glb");
-  console.log(width);
+  const { scene } = useGLTF("/device.glb");
   return (
     <div className="absolute w-full h-full ">
       <Canvas camera={{ position: [0, 0, -200], fov: 10 * (1065 / width) }}>
@@ -41,9 +40,3 @@ export default function DeviceAnimation({
     </div>
   );
 }
-
-// position={[
-//             -17.5 + 17.5 * (scrollDistance / 750),
-//             8 - 10 * (scrollDistance / 750),
-//             0,
-//           ]}

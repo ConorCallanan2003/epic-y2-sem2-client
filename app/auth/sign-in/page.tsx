@@ -53,7 +53,6 @@ function urlB64ToUint8Array(base64String: string) {
     .replace(/\-/g, "+")
     .replace(/_/g, "/");
 
-  console.log(base64);
   const rawData = window.atob(base64);
   const outputArray = new Uint8Array(rawData.length);
 
