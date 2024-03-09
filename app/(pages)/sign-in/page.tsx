@@ -113,7 +113,7 @@ export default function SignIn() {
           >
             Sign in
           </Button>
-          <Button className="w-full" onClick={() => router.push("/")}>
+          <Button className="w-full" onClick={() => router.back()}>
             Cancel
           </Button>
         </CardFooter>

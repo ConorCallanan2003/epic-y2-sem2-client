@@ -110,6 +110,15 @@ export default function SubmitForm() {
           >
             Submit
           </Button>
+          <Button
+            variant="destructive"
+            className="w-full sm:text-md text-lg"
+            onClick={() => {
+              router.back();
+            }}
+          >
+            Cancel
+          </Button>
         </CardFooter>
       </Card>
       <form></form>

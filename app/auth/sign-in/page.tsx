@@ -13,10 +13,6 @@ function Loader() {
   );
 }
 
-async function signInWithID(id: string) {
-  return "success";
-}
-
 const config = {
   pushKey:
     "BKdU2S8eVhdVjoHlNzumL91cPo_DblBU3B8iMmNdQfIPgD_VUVDnW63FPG9MmpuoNzALUUOl5PM4PJ2d_QUKjGQ",
@@ -31,7 +27,7 @@ async function subscribe(id: any) {
     applicationServerKey: urlB64ToUint8Array(config.pushKey),
   });
   console.log("Subscription registered");
-  fetch(
+  const result = fetch(
     "https://rgi6vfa23saurzlxbmxq67gkti0hbepw.lambda-url.eu-west-1.on.aws/",
     {
       method: "POST",
@@ -45,7 +41,6 @@ async function subscribe(id: any) {
       }),
     }
   );
-  sessionStorage.setItem("notifications", "true");
 }
 function urlB64ToUint8Array(base64String: string) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
@@ -68,15 +63,9 @@ export default function SignIn() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleSignIn = () => {
+  const handleSignIn = async () => {
     setLoading(true);
-    signInWithID(id).then((result) => {
-      setTimeout(() => {
-        window.sessionStorage.setItem("loggedIn", "true");
-        subscribe(id);
-        router.push("/");
-      }, 1000);
-    });
+    await subscribe(id);
   };
   return (
     <div className="flex-col w-full h-screen flex justify-start items-center ">

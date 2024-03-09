@@ -54,8 +54,8 @@ export default function Home() {
       <div className="absolute h-[700px] overflow-hidden z-0 w-full flex justify-center items-center">
         <DeviceAnimation scrollDistance={scrollDistance} />
       </div>
-      <div className="relative px-8 py-4 w-full h-[500px] flex flex-col align-center justify-center items-center z-10"></div>
-      <div className="relative px-8 py-4 w-full pt-16 h-[300px] flex flex-col align-center justify-center items-center z-10">
+      <div className="relative px-8 pt-4 w-full md:h-[700px] h-[600px] flex flex-col align-center justify-center items-center z-10"></div>
+      <div className="relative px-8 py-12 w-full pt-16 md:h-[300px] h-[450px] flex flex-col align-center justify-center items-center z-10">
         <motion.div
           ref={textRef}
           initial="hidden"
@@ -113,7 +113,7 @@ export default function Home() {
           <h1 className="text-2xl font-bold">Smart</h1>
         </motion.div>
       </motion.div>
-      <div className="w-full md:h-[120px] h-[250px]" />
+      <div className="w-full md:h-[250px] h-[200px]" />
     </>
   );
 }

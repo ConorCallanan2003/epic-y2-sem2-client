@@ -1,15 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
+import { use, useContext, useEffect, useState } from "react";
+import { AuthContext } from "../layout";
 
 export default function AccountDetails() {
-  let users: { email: string; password: string; admin: string }[];
-  let email = "";
-  let password = "";
-  useEffect(() => {
-    email = window.sessionStorage.getItem("user")!;
-    users = JSON.parse(window.sessionStorage.getItem("users") as string);
-    password = users.filter((user) => user.email == email)[0].password;
-  }, []);
+  const context = useContext(AuthContext);
+
   const unlockPattern = [3, 5, 1];
 
   const [showPassword, setShowPassword] = useState(false);
@@ -22,7 +17,7 @@ export default function AccountDetails() {
         </h1>
         <div className="flex justify-between">
           <h1 className="text-2xl font-medium">Email address</h1>
-          <h1 className="text-2xl font-light">{email}</h1>
+          <h1 className="text-2xl font-light">{context.email}</h1>
         </div>
         <div className="flex justify-between">
           <h1 className="text-2xl font-medium">Unlock pattern</h1>
@@ -37,7 +32,9 @@ export default function AccountDetails() {
         >
           <h1 className="text-2xl font-medium">Password</h1>
           <h1 className="text-2xl font-light">
-            {showPassword ? password : "●".repeat(password.length)}
+            {showPassword
+              ? context.password
+              : "●".repeat(context.password.length)}
           </h1>
         </div>
       </div>
