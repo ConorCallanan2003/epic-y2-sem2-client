@@ -11,8 +11,16 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+
+import { signUp } from "aws-amplify/auth";
+import userPool from "@/lib/userPool";
+
+type SignUpParameters = {
+  email: string;
+  password: string;
+};
 
 function addUser(email: string, password: string, admin: boolean) {
   let users = JSON.parse(window.sessionStorage.getItem("users") as string);
@@ -23,7 +31,8 @@ function addUser(email: string, password: string, admin: boolean) {
   window.sessionStorage.setItem("users", JSON.stringify(users));
 }
 
-export default function SignIn() {
+export default function SignUp() {
+  const router = useRouter();
   const [details, setDetails] = useState<Record<string, any>>({ admin: false });
 
   const [error, setError] = useState("");
@@ -32,7 +41,17 @@ export default function SignIn() {
   const pwRegex = new RegExp(pwRegexPattern);
   const emailRegex = new RegExp(emailRegexPattern);
 
-  const router = useRouter();
+  async function handleSignUp({ email, password }: SignUpParameters) {
+    console.log(password);
+    userPool.signUp(email, password, [], [], (err, data) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("SUCCESS");
+      }
+    });
+  }
+
   return (
     <div className="sm:p-12 w-full h-full flex flex-col justify-start sm:justify-center sm:pt-4 pt-10 align-center items-center">
       <Card className="w-full sm:w-[400px] bg-grey-700 border-none sm:border-red-500">
@@ -176,11 +195,15 @@ export default function SignIn() {
             className="w-full"
             onClick={() => {
               if (!error) {
-                addUser(
-                  details["email"],
-                  details["password1"],
-                  details["admin"]
-                );
+                handleSignUp({
+                  email: details["email"],
+                  password: details["password1"],
+                });
+                // addUser(
+                //   details["email"],
+                //   details["password1"],
+                //   details["admin"]
+                // );
                 router.push("/sign-in");
               }
             }}
