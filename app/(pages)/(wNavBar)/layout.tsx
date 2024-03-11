@@ -8,8 +8,6 @@ import NavBar from "@/app/components/NavBar/NavBar";
 import NavBarMobileDialog from "@/app/components/NavBar/NavBarMobileDialog";
 import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
 import React from "react";
-import { Amplify } from "aws-amplify";
-import config from "../../amplifyconfiguration.json";
 
 type AuthContextType = {
   loggedIn: boolean;

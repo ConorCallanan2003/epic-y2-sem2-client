@@ -14,7 +14,6 @@ import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { signUp } from "aws-amplify/auth";
 import userPool from "@/lib/userPool";
 
 type SignUpParameters = {
