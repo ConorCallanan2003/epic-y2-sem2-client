@@ -64,7 +64,11 @@ export default function SignIn() {
 
     user.confirmRegistration(code, false, (data, err) => {
       console.log(err);
-      console.log(data);
+      if (err) {
+        setError(err);
+      } else {
+        router.push("/");
+      }
     });
   }
 
