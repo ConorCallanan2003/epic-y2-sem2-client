@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import userPool from "@/lib/userPool";
+import cognitoPool from "@/lib/userPool";
 import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -21,17 +21,10 @@ export default function SignIn() {
 
   const [needsToVerify, setNeedsToVerify] = useState(false);
 
-  var params = {
-    GroupName: "STRING_VALUE" /* required */,
-    UserPoolId: "STRING_VALUE" /* required */,
-    Limit: "NUMBER_VALUE",
-    NextToken: "STRING_VALUE",
-  };
-
   function authenticateUser(email: string, password: string) {
     const user = new CognitoUser({
       Username: email,
-      Pool: userPool,
+      Pool: cognitoPool,
     });
 
     const authDetails = new AuthenticationDetails({
@@ -41,7 +34,10 @@ export default function SignIn() {
 
     user.authenticateUser(authDetails, {
       onSuccess: (data) => {
-        console.log("Logged in successfully");
+        setDetails((previous) => ({
+          ...previous,
+          email: data.getIdToken().payload.email,
+        }));
         router.push("/");
       },
       onFailure: (err) => {
@@ -59,7 +55,7 @@ export default function SignIn() {
   function verifyEmail(email: string, password: string, code: string) {
     const user = new CognitoUser({
       Username: email,
-      Pool: userPool,
+      Pool: cognitoPool,
     });
 
     user.confirmRegistration(code, false, (data, err) => {
@@ -172,16 +168,11 @@ export default function SignIn() {
                     details["code"]
                   )
                 : authenticateUser(details["email"], details["password"]);
-              // if (validateUser(details["email"], details["password"])) {
-              //   router.push("/");
-              // } else {
-              //   setError("Email or password is incorrect");
-              // }
             }}
           >
             {needsToVerify ? "Verify" : "Sign in"}
           </Button>
-          <Button className="w-full" onClick={() => setNeedsToVerify(false)}>
+          <Button className="w-full" onClick={() => router.back()}>
             Cancel
           </Button>
         </CardFooter>

@@ -10,8 +10,10 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import cognitoPool from "@/lib/userPool";
+import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function Loader() {
   return (
@@ -24,18 +26,12 @@ const config = {
     "BKdU2S8eVhdVjoHlNzumL91cPo_DblBU3B8iMmNdQfIPgD_VUVDnW63FPG9MmpuoNzALUUOl5PM4PJ2d_QUKjGQ",
 };
 
-async function subscribe(id: any) {
-  const devices: string[] = JSON.parse(
-    window.sessionStorage.getItem("devices") || "[]"
-  );
-  if (devices.find((device) => device == id)) return;
+async function subscribe(id: string) {
   const swReg = await global.navigator.serviceWorker.register("/sw.js");
-  console.log(swReg.active);
   const subscription = await swReg.pushManager.subscribe({
     userVisibleOnly: true,
     applicationServerKey: urlB64ToUint8Array(config.pushKey),
   });
-  console.log("Subscription registered");
   fetch(
     "https://rgi6vfa23saurzlxbmxq67gkti0hbepw.lambda-url.eu-west-1.on.aws/",
     {
@@ -51,6 +47,18 @@ async function subscribe(id: any) {
     }
   );
 }
+
+async function addDevice(id: string, email: string) {
+  const res = await fetch(
+    `https://0b0lfxgdu6.execute-api.eu-west-1.amazonaws.com/addUserDevice?email=${email}&id=${id}`,
+    {
+      method: "POST",
+    }
+  );
+  const data = await res.json();
+  console.log(data);
+}
+
 function urlB64ToUint8Array(base64String: string) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
   const base64 = (base64String + padding)
@@ -71,18 +79,23 @@ export default function SignIn() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSignIn = async () => {
+  const handleRegistration = async () => {
     setLoading(true);
     await subscribe(id);
-    const devices: string[] = JSON.parse(
-      window.sessionStorage.getItem("devices") || "[]"
-    );
-    window.sessionStorage.setItem(
-      "devices",
-      JSON.stringify(
-        devices.find((device) => device == id) ? devices : devices.concat([id])
-      )
-    );
+    const user = cognitoPool.getCurrentUser();
+    user?.getSession(async (error: any, session: any) => {
+      if (error) {
+        console.error(error);
+        router.push("/sign-in");
+      } else {
+        const email = (
+          jwtDecode(session.idToken.jwtToken) as {
+            email: string;
+          }
+        ).email;
+        await addDevice(id, email);
+      }
+    });
     router.push(`/register-device/success?id=${id}`);
   };
 
@@ -121,7 +134,11 @@ export default function SignIn() {
           </form>
         </CardContent>
         <CardFooter className="flex flex-col gap-3 w-full justify-between">
-          <Button variant="outline" className="w-full" onClick={handleSignIn}>
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={handleRegistration}
+          >
             {loading ? <Loader /> : "Register Device"}
           </Button>
           <Button className="w-full" onClick={() => router.back()}>

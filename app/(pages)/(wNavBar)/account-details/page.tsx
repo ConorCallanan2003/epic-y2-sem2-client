@@ -25,7 +25,7 @@ export default function AccountDetails() {
             {JSON.stringify(unlockPattern)}
           </h1>
         </div>
-        <div
+        {/* <div
           onMouseEnter={() => setShowPassword(true)}
           onMouseLeave={() => setShowPassword(false)}
           className="flex justify-between"
@@ -36,7 +36,7 @@ export default function AccountDetails() {
               ? context.password
               : "●".repeat(context.password.length)}
           </h1>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -5,4 +5,6 @@ const poolData = {
   ClientId: "4370avlba6q4o8cos6bkbp51cg",
 };
 
-export default new CognitoUserPool(poolData);
+const cognitoPool = new CognitoUserPool(poolData);
+
+export default cognitoPool;

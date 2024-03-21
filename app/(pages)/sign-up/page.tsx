@@ -11,23 +11,27 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import cognitoPool from "@/lib/userPool";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
-import userPool from "@/lib/userPool";
 
 type SignUpParameters = {
   email: string;
   password: string;
 };
 
-function addUser(email: string, password: string, admin: boolean) {
-  let users = JSON.parse(window.sessionStorage.getItem("users") as string);
-  if (!users) {
-    users = [];
+function addUserAsAdmin(email: string) {
+  let adminUsers: string[] = JSON.parse(
+    window.sessionStorage.getItem("adminUsers") as string
+  );
+  if (!adminUsers) {
+    adminUsers = [];
   }
-  users.push({ email, password, admin });
-  window.sessionStorage.setItem("users", JSON.stringify(users));
+  if (adminUsers.includes(email)) {
+    return;
+  }
+  adminUsers.push(email);
+  window.sessionStorage.setItem("adminUsers", JSON.stringify(adminUsers));
 }
 
 export default function SignUp() {
@@ -41,14 +45,17 @@ export default function SignUp() {
   const emailRegex = new RegExp(emailRegexPattern);
 
   async function handleSignUp({ email, password }: SignUpParameters) {
-    console.log(password);
-    userPool.signUp(email, password, [], [], (err, data) => {
+    cognitoPool.signUp(email, password, [], [], (err, data) => {
       if (err) {
         console.log(err);
       } else {
         console.log("SUCCESS");
       }
     });
+    if (details["admin"] === true) {
+    }
+    addUserAsAdmin(email);
+    router.push("/sign-in");
   }
 
   return (
@@ -198,12 +205,6 @@ export default function SignUp() {
                   email: details["email"],
                   password: details["password1"],
                 });
-                // addUser(
-                //   details["email"],
-                //   details["password1"],
-                //   details["admin"]
-                // );
-                router.push("/sign-in");
               }
             }}
           >

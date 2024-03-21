@@ -1,6 +1,8 @@
 "use client";
+import chatComplete from "@/lib/customerAssistant";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
+import { useEffect, useState } from "react";
 
 const loadingContainer = {
   width: "2rem",
@@ -49,25 +51,31 @@ const loadingCircleTransition = {
 };
 
 export default function ChatPage() {
-  const [messages, setMessages] = useState<
-    { sender: string; message: string }[]
-  >([]);
+  const [messages, setMessages] = useState<ChatCompletionMessageParam[]>([
+    {
+      role: "assistant",
+      content: "Hello! My name is Conor Glynn. How can I help you today?",
+    },
+  ]);
   const [input, setInput] = useState("");
   const [responding, setResponding] = useState(false);
 
   async function addMessage(message: string) {
     setMessages((previous) => {
-      return [...previous, { sender: "user", message: message }];
+      return [...previous, { role: "user", content: message }];
     });
 
     setResponding(true);
 
-    setTimeout(() => {
-      setResponding(false);
-      setMessages((previous) => {
-        return [...previous, { sender: "agent", message: "response" }];
-      });
-    }, 3000);
+    const response: ChatCompletionMessageParam = await chatComplete([
+      ...messages,
+      { role: "user", content: message },
+    ]);
+
+    setResponding(false);
+    setMessages((previous) => {
+      return [...previous, response];
+    });
   }
 
   return (
@@ -76,9 +84,9 @@ export default function ChatPage() {
       <div className="px-6 md:h-[580px] overflow-auto h-[500px] border py-6 rounded-lg border-2 w-full flex flex-col justify-end">
         {messages.map((message, index) => (
           <Message
-            key={message.sender + index.toString()}
-            system={message.sender == "agent"}
-            message={message.message}
+            key={message.role + index.toString()}
+            system={message.role == "assistant"}
+            message={message.content as string}
           />
         ))}
         {responding ? (
@@ -116,6 +124,12 @@ export default function ChatPage() {
       </div>
       <div className="w-full flex justify-between h-[50px] bg-white rounded-lg">
         <input
+          onKeyDown={(e) => {
+            if (e.key == "Enter") {
+              addMessage(input);
+              setInput("");
+            }
+          }}
           onChange={(e) => setInput(e.target.value)}
           value={input}
           type="text"

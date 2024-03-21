@@ -1,24 +1,22 @@
 "use client";
 import { Drawer } from "@/components/ui/drawer";
-import NavBarDialog from "../../components/NavBar/NavBarDialog";
-import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { createContext, useEffect, useState } from "react";
 import NavBarMobile from "@/app/components/NavBar/NavBarMobile";
 import NavBar from "@/app/components/NavBar/NavBar";
 import NavBarMobileDialog from "@/app/components/NavBar/NavBarMobileDialog";
 import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
 import React from "react";
-import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
-import userPool from "@/lib/userPool";
+import cognitoPool from "@/lib/userPool";
+import { jwtDecode } from "jwt-decode";
 
 type AuthContextType = {
-  loggedIn: boolean;
   email: string;
+  admin: boolean;
 };
 
-export const AuthContext = React.createContext<AuthContextType>({
-  loggedIn: false,
+export const AuthContext = createContext<AuthContextType>({
   email: "",
+  admin: false,
 });
 
 export default function Layout({
@@ -27,38 +25,55 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   const [authContext, setAuthContext] = useState<AuthContextType>({
-    loggedIn: false,
     email: "",
+    admin: false,
   });
 
-  useEffect(() => {
-    const user = userPool.getCurrentUser();
-    if (user) {
-      setAuthContext({
-        loggedIn: true,
-        email: user.getUsername(),
-      });
-    } else {
-      setAuthContext({
-        loggedIn: false,
-        email: "",
-      });
+  function checkIsUserAdmin(email: string, window: Window) {
+    const adminUsers: string[] = JSON.parse(
+      window.sessionStorage.getItem("adminUsers") as string
+    );
+    if (adminUsers && adminUsers.includes(email)) {
+      return true;
     }
+    return false;
+  }
+
+  useEffect(() => {
+    const user = cognitoPool.getCurrentUser();
+    user?.getSession((error: any, session: any) => {
+      if (error) {
+        console.error(error);
+      } else {
+        const email = (
+          jwtDecode(session.idToken.jwtToken) as {
+            aud: string;
+            "cognito:username": string;
+            email: string;
+            email_verified: string;
+          }
+        ).email;
+        const isAdmin = checkIsUserAdmin(email, window);
+        setAuthContext({ email: email, admin: isAdmin });
+      }
+    });
   }, []);
 
   function signOut() {
-    const user = userPool.getCurrentUser();
+    const user = cognitoPool.getCurrentUser();
     user?.signOut();
     setAuthContext({
-      loggedIn: false,
       email: "",
+      admin: false,
     });
   }
   return (
     <DropdownMenu>
       <Drawer>
         <div className="hidden sm:block">
-          <NavBar loggedIn={authContext.loggedIn} signOut={signOut} />
+          <AuthContext.Provider value={authContext}>
+            <NavBar signOut={signOut} />
+          </AuthContext.Provider>
         </div>
         <div className="sm:hidden">
           <NavBarMobile />
@@ -66,7 +81,10 @@ export default function Layout({
         <AuthContext.Provider value={authContext}>
           <div>{children}</div>
         </AuthContext.Provider>
-        <NavBarMobileDialog loggedIn={authContext.loggedIn} signOut={signOut} />
+        <NavBarMobileDialog
+          loggedIn={authContext.email != ""}
+          signOut={signOut}
+        />
       </Drawer>
     </DropdownMenu>
   );

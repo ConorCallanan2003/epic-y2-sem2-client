@@ -1,4 +1,5 @@
 "use client";
+import { AuthContext } from "@/app/(pages)/(wNavBar)/layout";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,15 +11,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import React from "react";
+import React, { useContext } from "react";
 
-export default function NavBar({
-  loggedIn,
-  signOut,
-}: {
-  loggedIn: boolean;
-  signOut: () => void;
-}) {
+export default function NavBar({ signOut }: { signOut: () => void }) {
+  const context = useContext(AuthContext);
   return (
     <div className="w-full h-[120px] flex items-center">
       <div className="p-8 w-1/5 font-medium text-lg flex items-center">
@@ -35,7 +31,7 @@ export default function NavBar({
         <ListItem text={"Product"} path={"/product"}></ListItem>
         <ListItem text={"About Us"} path={"/about-us"}></ListItem>
         <ListItem text={"Support"} path={"/support"}></ListItem>
-        {loggedIn ? (
+        {context.email != "" ? (
           <>
             <DropdownMenuTrigger asChild>
               <div className=" px-4 py-2 ml-4 rounded-md transition-colors duration-150 ease-in-out hover:bg-white hover:text-black">
@@ -43,6 +39,13 @@ export default function NavBar({
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-30">
+              {context.admin ? (
+                <DropdownMenuItem className="text-center w-30">
+                  <Link href={"/admin-dashboard"}>Admin Dashboard</Link>
+                </DropdownMenuItem>
+              ) : (
+                <></>
+              )}
               <DropdownMenuItem className="text-center w-30">
                 <Link href={"/dashboard"}>Dashboard</Link>
               </DropdownMenuItem>

@@ -2,26 +2,44 @@
 
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../layout";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Plus, Radio } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
   const context = useContext(AuthContext);
+  const router = useRouter();
   const [devices, setDevices] = useState([]);
-  useEffect(() => {
-    setDevices(JSON.parse(window.sessionStorage.getItem("devices") || "[]"));
-  }, []);
-  function deleteDevice(id: string) {
-    const devices: string[] = JSON.parse(
-      window.sessionStorage.getItem("devices") || "[]"
+  const [refresh, setRefresh] = useState(0);
+
+  async function deleteDevice(id: string) {
+    if (context.email == "") {
+      router.push("/sign-in");
+      return;
+    }
+    const email = context.email;
+    await fetch(
+      `https://0b0lfxgdu6.execute-api.eu-west-1.amazonaws.com/deleteUserDevice?email=${email}&id=${id}`,
+      { method: "DELETE" }
     );
-    window.sessionStorage.setItem(
-      "devices",
-      JSON.stringify(devices.filter((device) => device != id))
-    );
-    setDevices(JSON.parse(window.sessionStorage.getItem("devices") || "[]"));
+    setRefresh((previous) => previous + 1);
   }
+
+  async function getDevices(email: string) {
+    const response = await fetch(
+      `https://0b0lfxgdu6.execute-api.eu-west-1.amazonaws.com/getUserDevices?email=${email}`,
+      {
+        method: "GET",
+      }
+    );
+    setDevices(await response.json());
+  }
+
+  useEffect(() => {
+    if (context.email) {
+      getDevices(context.email);
+    }
+  }, [context, refresh]);
   return (
     <div className="flex flex-col items-center justify-center px-8">
       <h1 className="pb-6 text-4xl font-bold">Dashboard</h1>
@@ -48,7 +66,10 @@ export default function Dashboard() {
             >
               <h1 className="text-2xl font-bold">ID {device}</h1>
               <Radio size={120} />
-              <button className="w-full boder-transparent rounded-lg border-2 bg-white px-3 py-2 font-medium text-black  duration-300 hover:scale-105">
+              <button
+                onClick={() => router.push(`/dashboard/${device}`)}
+                className="w-full boder-transparent rounded-lg border-2 bg-white px-3 py-2 font-medium text-black  duration-300 hover:scale-105"
+              >
                 View details
               </button>
               <button
