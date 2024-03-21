@@ -106,7 +106,9 @@ export default function SubmitForm() {
           <Button
             variant="outline"
             className="w-full sm:text-md text-lg"
-            onClick={() => {}}
+            onClick={() => {
+              router.push("submit-form/success");
+            }}
           >
             Submit
           </Button>

@@ -54,7 +54,7 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<ChatCompletionMessageParam[]>([
     {
       role: "assistant",
-      content: "Hello! My name is Conor Glynn. How can I help you today?",
+      content: "Hello! My name is Deirdre. How can I help you today?",
     },
   ]);
   const [input, setInput] = useState("");

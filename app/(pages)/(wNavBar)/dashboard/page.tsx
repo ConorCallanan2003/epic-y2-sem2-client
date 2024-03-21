@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 export default function Dashboard() {
   const context = useContext(AuthContext);
   const router = useRouter();
-  const [devices, setDevices] = useState([]);
+  const [devices, setDevices] = useState<string[]>([]);
   const [refresh, setRefresh] = useState(0);
 
   async function deleteDevice(id: string) {
