@@ -4,6 +4,9 @@ This project was the frontend component of an assignment from semester two of se
 The assignment was to design and build a novel Internet of Things human interaction device. What I built was a device that can be fastened to the crossbar of a bike that would detect someone trying to steal it and would then use Web Push Notifications (the backend for this was implemented in an AWS Lambda Function) to notify the user of the disturbance and send them a photo of the potential thief. 
 
 
+## Video
+[![Video Walkthrough (Youtube)](https://img.youtube.com/vi/dJT5y7_rpn0/0.jpg)](https://youtu.be/dJT5y7_rpn0)
+
 
 ## Default NextJS README/Getting Started page:
 
